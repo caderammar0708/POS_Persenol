@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Unit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
@@ -14,6 +15,7 @@ class ProductController extends Controller
     public function index()
     {
         return Inertia::render('Admin/Products/index', [
+            'auth' => ['user' => Auth::user()],
             'products' => Product::with(['category', 'unit'])->get()
         ]);
     }
@@ -21,6 +23,7 @@ class ProductController extends Controller
     public function create()
     {
         return Inertia::render('Admin/Products/create', [
+            'auth' => ['user' => Auth::user()],
             'parentCategories' => Category::whereNull('parent_id')->where('is_active', true)->get(),
             'units' => Unit::all()
         ]);
@@ -51,6 +54,7 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         return Inertia::render('Admin/Products/edit', [
+            'auth' => ['user' => Auth::user()],
             'product' => $product->load('category'),
             'parentCategories' => Category::whereNull('parent_id')->where('is_active', true)->get(),
             'allCategories' => Category::where('is_active', true)->get(),

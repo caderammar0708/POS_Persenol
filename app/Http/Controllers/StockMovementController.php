@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\StockMovement;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
 
@@ -13,6 +14,7 @@ class StockMovementController extends Controller
     public function index()
     {
         return Inertia::render('Admin/Stock/index', [
+            'auth' => ['user' => Auth::user()],
             'movements' => StockMovement::with(['product', 'user'])
                 ->latest()
                 ->paginate(15),
@@ -33,7 +35,7 @@ class StockMovementController extends Controller
             // 1. Create the manual record
             StockMovement::create([
                 'product_id' => $request->product_id,
-                'user_id' => auth()->id(),
+                'user_id' => Auth::id(),
                 'quantity' => $request->quantity,
                 'type' => $request->type,
                 'reason' => $request->reason ?? 'Manual Adjustment',

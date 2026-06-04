@@ -5,6 +5,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
@@ -20,6 +21,7 @@ class CategoryController extends Controller
     public function index()
     {
         return Inertia::render('Admin/Categories/index', [
+            'auth' => ['user' => Auth::user()],
             'categories' => Category::with('parent')->get(),
             'parentOptions' => Category::whereNull('parent_id')->get()
         ]);

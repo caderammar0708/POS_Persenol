@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Customer;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+
 class CustomerController extends Controller
 {
     /**
@@ -13,7 +15,8 @@ class CustomerController extends Controller
     public function index()
     {
         return Inertia::render('Admin/Customers/index', [
-            'customers' => Customer::latest()->get()
+            'auth' => ['user' => Auth::user()],
+            'customers' => Customer::latest()->get(),
         ]);
     }
 
@@ -22,7 +25,9 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Admin/Customers/create');
+        return Inertia::render('Admin/Customers/create', [
+            'auth' => ['user' => Auth::user()],
+        ]);
     }
 
     /**
@@ -55,7 +60,8 @@ return redirect()->route('customer.index')->with('message', 'Customer added succ
     public function edit(Customer $customer)
     {
         return Inertia::render('Admin/Customers/edit', [
-            'customer' => $customer
+            'auth' => ['user' => Auth::user()],
+            'customer' => $customer,
         ]);
     }
 

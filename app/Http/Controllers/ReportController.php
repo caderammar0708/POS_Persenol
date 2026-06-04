@@ -6,6 +6,7 @@ use App\Models\Sale;
 use App\Models\SaleItem;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -26,7 +27,10 @@ class ReportController extends Controller
             'recent_sales' => Sale::with('user')->whereDate('created_at', $today)->latest()->take(10)->get()
         ];
 
-        return Inertia::render('Admin/Reports/daily', ['stats' => $stats]);
+        return Inertia::render('Admin/Reports/daily', [
+            'auth' => ['user' => Auth::user()],
+            'stats' => $stats
+        ]);
     }
 
     public function products()

@@ -52,10 +52,10 @@ Route::middleware('auth')->group(function () {
 
 });
 
-Route::prefix('Admin')->middleware('auth')->group(function () {
+Route::prefix('Admin')->middleware(['auth', 'admin'])->group(function () {
     Route::resource('user', UserController::class);
 });
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/categories', [CategoryController::class, 'index'])->name('category.index');
     Route::post('/categories', [CategoryController::class, 'store'])->name('category.store');
     Route::patch('/categories/{category}', [CategoryController::class, 'update'])->name('category.update');
@@ -63,35 +63,35 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('product', ProductController::class);
     Route::get('product/child-categories/{parentId}', [ProductController::class, 'getChildCategories'])->name('product.child-categories');
 });
 
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('customer', CustomerController::class);
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('offers', OfferController::class);
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('sales/history', [SaleController::class, 'history'])->name('sales.history');
     Route::resource('sales', SaleController::class);
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('Stock', StockMovementController::class);
 });
 
-Route::prefix('admin/reports')->group(function () {
+Route::prefix('admin/reports')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/daily', [ReportController::class, 'daily'])->name('reports.daily');
     Route::get('/products', [ReportController::class, 'products'])->name('reports.products');
     Route::get('/profit', [ReportController::class, 'profit'])->name('reports.profit');
 });
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('Unit', UnitController::class);
 });
 

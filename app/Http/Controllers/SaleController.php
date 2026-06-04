@@ -6,6 +6,7 @@ use App\Models\Sale;
 use App\Models\Product;
 use App\Models\StockMovement;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -46,6 +47,7 @@ class SaleController extends Controller
             ->get();
 
         return Inertia::render('Admin/Sales/index', [
+            'auth' => ['user' => Auth::user()],
             'products' => $products,
             'comboOffers' => $comboOffers,
             'couponOffers' => $couponOffers
@@ -63,7 +65,7 @@ class SaleController extends Controller
         $sale = DB::transaction(function () use ($request) {
             // 1. Create the Sale record
             $sale = Sale::create([
-                'user_id' => auth()->id(),
+                'user_id' => Auth::id(),
                 'customer_id' => $request->customer_id, // Ensure customer_id is also saved if provided
                 'coupon_id' => $request->coupon_id,
                 'total' => $request->total,
@@ -95,7 +97,7 @@ class SaleController extends Controller
                 // 4. Record the Stock Movement
                 StockMovement::create([
                     'product_id' => $item['id'],
-                    'user_id' => auth()->id(),
+                    'user_id' => Auth::id(),
                     'type' => 'out',
                     'quantity' => $item['qty'],
                     'reason' => 'Sale ID: #' . $sale->id,

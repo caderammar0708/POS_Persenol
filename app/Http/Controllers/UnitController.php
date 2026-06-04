@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Unit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class UnitController extends Controller
@@ -14,6 +15,7 @@ class UnitController extends Controller
     public function index()
     {
         return inertia('Admin/Units/index', [
+            'auth' => ['user' => Auth::user()],
             'units' => Unit::all()
         ]);
     }
@@ -23,7 +25,9 @@ class UnitController extends Controller
      */
     public function create()
     {
-        return inertia::render('Admin/Units/create');
+        return inertia::render('Admin/Units/create', [
+            'auth' => ['user' => Auth::user()],
+        ]);
     }
 
     /**
@@ -49,6 +53,7 @@ class UnitController extends Controller
     public function edit(Unit $unit)
     {
         return inertia::render('Admin/Units/edit', [
+            'auth' => ['user' => Auth::user()],
             'unit' => $unit
         ]);
     }
