@@ -81,8 +81,6 @@ const navigation = {
   cashier: [
     { name: 'Dashboard', href: route('dashboard'), icon: HomeIcon },
     { name: 'POS / New Sale', href: route('sales.index'), icon: CreditCardIcon },
-    { name: 'Products', href: route('product.index'), icon: CubeIcon },
-    { name: 'Customers', href: route('customer.index'), icon: UserGroupIcon },
     { name: 'Sales History', href: route('sales.history'), icon: ShoppingBagIcon },
   ],
 };
