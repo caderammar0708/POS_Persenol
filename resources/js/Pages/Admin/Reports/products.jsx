@@ -3,7 +3,7 @@ import { Head } from '@inertiajs/react';
 
 export default function Products({ auth, productStats, lowStock }) {
     return (
-        <AuthenticatedLayout user={auth.user} header={<h2 className="font-bold text-xl">Product Analytics</h2>}>
+        <AuthenticatedLayout user={auth?.user ?? null} header={<h2 className="font-bold text-xl">Product Analytics</h2>}>
             <Head title="Product Reports" />
             <div className="py-12 max-w-7xl mx-auto px-4 space-y-6">
                 <div className="bg-white p-6 rounded-lg shadow">

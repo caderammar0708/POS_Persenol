@@ -10,7 +10,7 @@ export default function Index({ auth, units }) {
     };
 
     return (
-        <AuthenticatedLayout user={auth.user} header={<h2 className="font-semibold text-xl text-gray-800">Unit Management</h2>}>
+        <AuthenticatedLayout user={auth?.user ?? null} header={<h2 className="font-semibold text-xl text-gray-800">Unit Management</h2>}>
             <Head title="Units" />
             <div className="max-w-7xl mx-auto">
                 <div className="flex justify-end mb-6">

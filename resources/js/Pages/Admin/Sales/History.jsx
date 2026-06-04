@@ -5,7 +5,7 @@ import { EyeIcon, PrinterIcon } from '@heroicons/react/24/outline';
 export default function History({ auth, sales }) {
     return (
         <AuthenticatedLayout
-            user={auth.user}
+            user={auth?.user ?? null}
             header={<h2 className="font-bold text-2xl text-indigo-800">Sales History</h2>}
         >
             <Head title="Sales History" />

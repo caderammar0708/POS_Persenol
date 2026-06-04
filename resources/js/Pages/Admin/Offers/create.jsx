@@ -62,7 +62,7 @@ export default function Create({ auth, products, defaultType }) {
     };
 
     return (
-        <AuthenticatedLayout user={auth.user} header={<h2 className="font-bold text-2xl text-indigo-800">Create New Offer</h2>}>
+        <AuthenticatedLayout user={auth?.user ?? null} header={<h2 className="font-bold text-2xl text-indigo-800">Create New Offer</h2>}>
             <Head title="Create Offer" />
 
             <div className="max-w-5xl mx-auto py-8 px-4">

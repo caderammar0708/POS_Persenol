@@ -95,7 +95,7 @@ export default function Index({ auth, products, comboOffers, couponOffers }) {
     // --- Render ---
     return (
         <AuthenticatedLayout
-            user={auth.user}
+            user={auth?.user ?? null}
             header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Sales Terminal</h2>}
         >
             <Head title="Sales" />

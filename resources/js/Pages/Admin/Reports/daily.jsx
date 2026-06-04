@@ -3,7 +3,7 @@ import { Head } from '@inertiajs/react';
 
 export default function Daily({ auth, stats }) {
     return (
-        <AuthenticatedLayout user={auth.user} header={<h2 className="font-bold text-xl text-gray-800">Daily Sales Report</h2>}>
+        <AuthenticatedLayout user={auth?.user ?? null} header={<h2 className="font-bold text-xl text-gray-800">Daily Sales Report</h2>}>
             <Head title="Daily Report" />
             <div className="py-12 max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

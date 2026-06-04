@@ -34,7 +34,7 @@ export default function Create({ auth, parentCategories }) {
     };
 
     return (
-        <AuthenticatedLayout user={auth.user}>
+        <AuthenticatedLayout user={auth?.user ?? null}>
             <Head title="Create Product" />
             <div className="max-w-2xl mx-auto p-8 bg-white mt-10 shadow rounded">
                 <form onSubmit={submit} className="space-y-4">

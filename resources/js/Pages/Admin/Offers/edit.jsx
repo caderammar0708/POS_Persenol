@@ -54,7 +54,7 @@ export default function Edit({ auth, offer, products, offerProducts }) {
     };
 
     return (
-        <AuthenticatedLayout user={auth.user} header={<h2 className="font-bold text-2xl text-indigo-800">Update Offer</h2>}>
+        <AuthenticatedLayout user={auth?.user ?? null} header={<h2 className="font-bold text-2xl text-indigo-800">Update Offer</h2>}>
             <Head title="Edit Offer" />
 
             <div className="max-w-5xl mx-auto py-8 px-4">

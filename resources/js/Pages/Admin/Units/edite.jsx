@@ -13,7 +13,7 @@ export default function Edit({ auth, unit }) {
     };
 
     return (
-        <AuthenticatedLayout user={auth.user} header={<h2 className="font-semibold text-xl text-gray-800">Edit Unit</h2>}>
+        <AuthenticatedLayout user={auth?.user ?? null} header={<h2 className="font-semibold text-xl text-gray-800">Edit Unit</h2>}>
             <Head title="Edit Unit" />
             <div className="max-w-2xl mx-auto bg-white p-8 shadow rounded-lg">
                 <form onSubmit={submit} className="space-y-6">

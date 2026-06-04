@@ -4,7 +4,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 export default function UserIndex({ auth, flash, users }) {
     return (
         <AuthenticatedLayout
-            user={auth.user}
+            user={auth?.user ?? null}
             header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">User Management</h2>}
         >
             <Head title="Users" />

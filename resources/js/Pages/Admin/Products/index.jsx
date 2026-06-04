@@ -3,7 +3,7 @@ import { Head, Link, router } from '@inertiajs/react';
 
 export default function Index({ auth, products }) {
     return (
-        <AuthenticatedLayout user={auth.user} header={<h2 className="font-semibold text-xl">Products</h2>}>
+        <AuthenticatedLayout user={auth?.user ?? null} header={<h2 className="font-semibold text-xl">Products</h2>}>
             <Head title="Products" />
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">

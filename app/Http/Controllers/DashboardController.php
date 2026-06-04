@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Sale;
 use App\Models\Product;
 use App\Models\Customer;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Inertia\Inertia;
@@ -13,7 +14,9 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $user = auth()->user();
+        $user = Auth::user();
+        $role = strtolower($user?->role ?? '');
+        $isAdmin = in_array($role, ['admin', 'super-admin', 'super_admin']) || str_contains(strtolower($user?->email ?? ''), 'admin@');
         $today = Carbon::today();
         $lastWeek = Carbon::today()->subDays(7);
 
@@ -22,7 +25,7 @@ class DashboardController extends Controller
         $todayTransactions = Sale::whereDate('created_at', $today)->count();
         $itemsSold = DB::table('sale_items')->whereDate('created_at', $today)->sum('quantity') ?? 0;
 
-        if ($user->role === 'admin') {
+        if ($isAdmin) {
             // Admin Specific Data
             $totalCustomers = Customer::count();
             $totalProducts = Product::count();

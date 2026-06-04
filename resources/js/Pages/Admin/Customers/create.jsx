@@ -10,7 +10,7 @@ export default function Create({ auth }) {
     });
 
     return (
-        <AuthenticatedLayout user={auth.user} header={<h2 className="font-semibold text-xl">Add Customer</h2>}>
+        <AuthenticatedLayout user={auth?.user ?? null} header={<h2 className="font-semibold text-xl">Add Customer</h2>}>
             <Head title="Add Customer" />
             <div className="py-12">
                 <div className="max-w-2xl mx-auto sm:px-6 lg:px-8 bg-white p-6 shadow rounded-lg">

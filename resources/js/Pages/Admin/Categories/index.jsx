@@ -18,7 +18,7 @@ export default function CategoryIndex({ auth, categories, parentOptions, flash }
 };
 
     return (
-        <AuthenticatedLayout user={auth.user} header={<h2 className="font-semibold text-xl text-gray-800">Categories</h2>}>
+        <AuthenticatedLayout user={auth?.user ?? null} header={<h2 className="font-semibold text-xl text-gray-800">Categories</h2>}>
             <Head title="Categories" />
 
             <div className="py-12">

@@ -66,7 +66,7 @@ export default function Profit({ auth, stats }) {
 
     return (
         <AuthenticatedLayout
-            user={auth.user}
+            user={auth?.user ?? null}
             header={<h2 className="font-bold text-2xl text-indigo-800">Financial Reports</h2>}
         >
             <Head title="Profit Report" />

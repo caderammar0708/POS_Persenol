@@ -40,7 +40,7 @@ export default function Index({ auth, offers, currentType }) {
 
     return (
         <AuthenticatedLayout 
-            user={auth.user} 
+            user={auth?.user ?? null} 
             header={
                 <div className="flex items-center gap-3">
                     <TypeIcon type={currentType} className="h-8 w-8 text-indigo-600" />

@@ -4,7 +4,7 @@ import { Head, Link, router } from '@inertiajs/react';
 export default function Index({ auth, customers }) {
     return (
         <AuthenticatedLayout
-            user={auth.user}
+            user={auth?.user ?? null}
             header={<h2 className="font-semibold text-xl text-gray-800">Customers</h2>}
         >
             <Head title="Customers" />
