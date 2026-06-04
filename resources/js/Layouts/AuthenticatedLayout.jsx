@@ -1,6 +1,6 @@
 // resources/js/Layouts/AuthenticatedLayout.jsx
 import { useState } from 'react';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import {
   HomeIcon,
   CreditCardIcon,
@@ -205,7 +205,8 @@ const NavItem = ({ item }) => {
 export default function AuthenticatedLayout({ user = null, header, children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showLogout, setShowLogout] = useState(false);
-  const safeUser = user ?? {};
+  const pageUser = usePage().props.auth?.user ?? null;
+  const safeUser = user ?? pageUser ?? {};
   const userRole = safeUser.role || 'cashier';
   const navItems = navigation[userRole] || navigation.cashier;
 

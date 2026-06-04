@@ -53,6 +53,9 @@ class DashboardController extends Controller
             $recentSales = Sale::with('user')->latest()->take(5)->get();
 
             return Inertia::render('Admin/AdminDashboard', [
+                'auth' => [
+                    'user' => $user,
+                ],
                 'stats' => [
                     'todaySales' => $todaySales,
                     'salesTrend' => 12, // For demo; calculate real % by comparing to yesterday if needed
@@ -77,6 +80,9 @@ class DashboardController extends Controller
             ->get();
 
         return Inertia::render('Cashier/CashierDashboard', [
+            'auth' => [
+                'user' => $user,
+            ],
             'stats' => [
                 'todaySales' => $todaySales,
                 'todayTransactions' => $todayTransactions,
