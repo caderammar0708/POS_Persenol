@@ -15,8 +15,7 @@ class DashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $role = strtolower($user?->role ?? '');
-        $isAdmin = in_array($role, ['admin', 'super-admin', 'super_admin']) || str_contains(strtolower($user?->email ?? ''), 'admin@');
+        $isAdmin = $user?->isAdmin() ?? false;
         $today = Carbon::today();
         $lastWeek = Carbon::today()->subDays(7);
 

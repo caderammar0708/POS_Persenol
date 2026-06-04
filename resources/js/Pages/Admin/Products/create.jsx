@@ -2,18 +2,25 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { useForm, Head } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
 
-export default function Create({ auth, parentCategories }) {
+export default function Create({ auth, parentCategories, units = [] }) {
     const [childCategories, setChildCategories] = useState([]);
     const [selectedParent, setSelectedParent] = useState('');
-    
+
     const { data, setData, post, errors } = useForm({
-        name: '', category_id: '', price: '', stock: '', image: null, product_code: ''
+        name: '',
+        category_id: '',
+        unit_id: '',
+        price: '',
+        cost_price: '',
+        stock: '',
+        image: null,
+        product_code: ''
     });
 
     const handleParentChange = async (parentId) => {
         setSelectedParent(parentId);
         setData('category_id', ''); // Reset category selection
-        
+
         if (parentId) {
             try {
                 const response = await fetch(`/product/child-categories/${parentId}`);
@@ -39,11 +46,11 @@ export default function Create({ auth, parentCategories }) {
             <div className="max-w-2xl mx-auto p-8 bg-white mt-10 shadow rounded">
                 <form onSubmit={submit} className="space-y-4">
                     <input type="text" placeholder="Product Name" onChange={e => setData('name', e.target.value)} className="w-full rounded border-gray-300" />
-                    
+
                     <div className="space-y-2">
                         <label className="block text-sm font-medium text-gray-700">Parent Category</label>
-                        <select 
-                            onChange={e => handleParentChange(e.target.value)} 
+                        <select
+                            onChange={e => handleParentChange(e.target.value)}
                             className="w-full rounded border-gray-300"
                             value={selectedParent}
                         >
@@ -51,12 +58,12 @@ export default function Create({ auth, parentCategories }) {
                             {parentCategories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                         </select>
                     </div>
-                    
+
                     {selectedParent && (
                         <div className="space-y-2">
                             <label className="block text-sm font-medium text-gray-700">Sub-Category</label>
-                            <select 
-                                onChange={e => setData('category_id', e.target.value)} 
+                            <select
+                                onChange={e => setData('category_id', e.target.value)}
                                 className="w-full rounded border-gray-300"
                                 value={data.category_id}
                             >
@@ -69,8 +76,8 @@ export default function Create({ auth, parentCategories }) {
 
                     <div className="space-y-2">
                         <label className="block text-sm font-medium text-gray-700">Unit</label>
-                        <select 
-                            onChange={e => setData('unit_id', e.target.value)} 
+                        <select
+                            onChange={e => setData('unit_id', e.target.value)}
                             className="w-full rounded border-gray-300"
                             value={data.unit_id}
                         >
@@ -79,8 +86,9 @@ export default function Create({ auth, parentCategories }) {
                         </select>
                         {errors.unit_id && <div className="text-red-500 text-xs">{errors.unit_id}</div>}
                     </div>
-                    
+
                     <input type="text" placeholder="Product Code" onChange={e => setData('product_code', e.target.value)} className="w-full rounded border-gray-300" />
+                    <input type="number" step="0.01" placeholder="Cost Price" onChange={e => setData('cost_price', e.target.value)} className="w-full rounded border-gray-300" />
                     <input type="number" step="0.01" placeholder="Price" onChange={e => setData('price', e.target.value)} className="w-full rounded border-gray-300" />
                     <input type="number" placeholder="Stock" onChange={e => setData('stock', e.target.value)} className="w-full rounded border-gray-300" />
 

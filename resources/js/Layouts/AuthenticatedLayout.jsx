@@ -207,8 +207,11 @@ export default function AuthenticatedLayout({ user = null, header, children }) {
   const [showLogout, setShowLogout] = useState(false);
   const pageUser = usePage().props.auth?.user ?? null;
   const safeUser = user ?? pageUser ?? {};
-  const userRole = safeUser.role || 'cashier';
-  const navItems = navigation[userRole] || navigation.cashier;
+  const normalizedRole = String(safeUser.role ?? '').toLowerCase();
+  const normalizedEmail = String(safeUser.email ?? '').toLowerCase();
+  const isAdmin = ['admin', 'super-admin', 'super_admin'].includes(normalizedRole)
+    || normalizedEmail.includes('admin@');
+  const navItems = isAdmin ? navigation.admin : navigation.cashier;
 
   return (
     <div className="min-h-screen bg-gray-50">

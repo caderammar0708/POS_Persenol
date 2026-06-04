@@ -6,21 +6,21 @@ import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { useState, useEffect } from 'react';
 
-export default function Edit({ auth, product, parentCategories, allCategories }) {
+export default function Edit({ auth, product, parentCategories, allCategories, units = [] }) {
     const [childCategories, setChildCategories] = useState([]);
     const [selectedParent, setSelectedParent] = useState('');
-    
+
     // Find the current category and its parent
     const currentCategory = allCategories.find(cat => cat.id === product.category_id);
     const initialParentId = currentCategory?.parent_id || '';
-    
+
     useEffect(() => {
         if (initialParentId) {
             setSelectedParent(initialParentId);
             loadChildrenCategories(initialParentId);
         }
     }, [initialParentId]);
-    
+
     const loadChildrenCategories = async (parentId) => {
         if (parentId) {
             try {
@@ -35,19 +35,22 @@ export default function Edit({ auth, product, parentCategories, allCategories })
             setChildCategories([]);
         }
     };
-    
+
     const handleParentChange = async (parentId) => {
         setSelectedParent(parentId);
         setData('category_id', ''); // Reset category selection
         await loadChildrenCategories(parentId);
     };
     const { data, setData, post, processing, errors } = useForm({
-        name: product.name,
-        category_id: product.category_id,
-        price: product.price,
-        stock: product.stock,
-        image: null, // We keep this null unless a new file is picked
-        _method: 'patch', // CRITICAL: Method spoofing for file uploads
+        name: product.name ?? '',
+        category_id: product.category_id ?? '',
+        unit_id: product.unit_id ?? '',
+        price: product.price ?? '',
+        cost_price: product.cost_price ?? '',
+        stock: product.stock ?? '',
+        product_code: product.product_code ?? '',
+        image: null,
+        _method: 'patch',
     });
 
     const submit = (e) => {
@@ -98,7 +101,7 @@ export default function Edit({ auth, product, parentCategories, allCategories })
                                     ))}
                                 </select>
                             </div>
-                            
+
                             {selectedParent && (
                                 <div>
                                     <InputLabel htmlFor="category" value="Sub-Category" />
