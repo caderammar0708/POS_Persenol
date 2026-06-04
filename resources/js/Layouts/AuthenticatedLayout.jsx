@@ -207,16 +207,13 @@ export default function AuthenticatedLayout({ user = null, header, children }) {
   const [showLogout, setShowLogout] = useState(false);
   const pageUser = usePage().props.auth?.user ?? {};
   const safeUser = { ...pageUser, ...(user ?? {}) };
-  const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
-  const adminPagePrefixes = ['/dashboard', '/product', '/categories', '/customer', '/offers', '/sales', '/Stock', '/Unit', '/admin/reports', '/Admin'];
-  const isAdminPage = adminPagePrefixes.some((prefix) => currentPath === prefix || currentPath.startsWith(`${prefix}/`));
   const normalizedRole = String(safeUser.role ?? '').toLowerCase();
   const normalizedEmail = String(safeUser.email ?? '').toLowerCase();
+
   const isAdmin = Boolean(safeUser.is_admin)
     || ['admin', 'super-admin', 'super_admin'].includes(normalizedRole)
     || normalizedEmail.includes('admin@')
-    || normalizedRole.includes('admin')
-    || isAdminPage;
+    || normalizedRole.includes('admin');
   const navItems = isAdmin ? navigation.admin : navigation.cashier;
 
   return (
