@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\User\UserController; // Import your controller
@@ -29,6 +30,9 @@ use App\Http\Controllers\OfferController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
+        'auth' => [
+            'user' => Auth::user(),
+        ],
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,

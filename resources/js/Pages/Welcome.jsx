@@ -1,6 +1,8 @@
 import { Link, Head } from '@inertiajs/react';
 
-export default function Welcome({ auth }) {
+export default function Welcome({ auth = { user: null } }) {
+    const user = auth?.user ?? null;
+
     return (
         <div className="min-h-screen bg-white text-gray-900">
             <Head title="Welcome to Our Store" />
@@ -13,7 +15,7 @@ export default function Welcome({ auth }) {
                 <div className="space-x-6 flex items-center">
                     <Link href="#" className="text-sm font-medium hover:text-indigo-600">Shop</Link>
                     <Link href="#" className="text-sm font-medium hover:text-indigo-600">Categories</Link>
-                    {auth.user ? (
+                    {user ? (
                         <Link
                             href={route('dashboard')}
                             className="bg-indigo-600 text-white px-5 py-2 rounded-full text-sm font-semibold"
@@ -91,7 +93,7 @@ export default function Welcome({ auth }) {
                     <div className="flex space-x-6 text-sm">
                         <a href="#" className="hover:text-white">Privacy Policy</a>
                         <a href="#" className="hover:text-white">Terms of Service</a>
-                        <a href="#" className="hover:text-white">Contact Us</a> 
+                        <a href="#" className="hover:text-white">Contact Us</a>
                     </div>
                 </div>
                 <div className="text-center text-xs">
