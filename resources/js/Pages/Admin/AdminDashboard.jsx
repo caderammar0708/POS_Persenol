@@ -129,10 +129,12 @@ const LowStockAlert = ({ products = [] }) => {
     );
 };
 
-export default function AdminDashboard({ auth, stats, salesData, recentSales, lowStockProducts }) {
+export default function AdminDashboard({ auth = {}, stats = {}, salesData = [], recentSales = [], lowStockProducts = [] }) {
+    const currentUser = auth?.user ?? null;
+
     return (
         <AuthenticatedLayout
-            user={auth.user}
+            user={currentUser}
             header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Admin Control Center</h2>}
         >
             <Head title="Admin Dashboard" />

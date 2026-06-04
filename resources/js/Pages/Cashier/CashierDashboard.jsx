@@ -55,10 +55,12 @@ const TodaySalesList = ({ sales = [] }) => (
     </div>
 );
 
-export default function CashierDashboard({ auth, stats, todaySales }) {
+export default function CashierDashboard({ auth = {}, stats = {}, todaySales = [] }) {
+    const currentUser = auth?.user ?? null;
+
     return (
         <AuthenticatedLayout
-            user={auth.user}
+            user={currentUser}
             header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Cashier Dashboard</h2>}
         >
             <Head title="Cashier Dashboard" />

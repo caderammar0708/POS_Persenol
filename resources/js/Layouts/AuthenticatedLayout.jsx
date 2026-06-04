@@ -100,18 +100,18 @@ const NavItem = ({ item }) => {
     ? item.children.some(child => {
         // Get the child's path from href
         const childPath = child.href.split('?')[0]; // Remove query params
-        
+
         // Check if current path starts with the child's base path
         // This handles routes like /offers, /product, /category, etc.
         const basePath = childPath.replace(window.location.origin, '');
-        
+
         // Check for exact route match using Inertia's router
         const routeName = child.href.split('/').pop().split('?')[0];
         const matchesRoute = route().current(routeName);
-        
+
         // Check if current URL contains the base path (for nested routes)
         const matchesPath = currentUrl.includes(basePath) || currentPath.includes(basePath.replace(/https?:\/\/[^/]+/, ''));
-        
+
         // For query parameter specific pages (like offers with type)
         if (child.href.includes('?')) {
           const urlParams = new URLSearchParams(child.href.split('?')[1]);
@@ -121,7 +121,7 @@ const NavItem = ({ item }) => {
             }
           }
         }
-        
+
         return matchesRoute || matchesPath;
       })
     : route().current(item.href.split('/').pop());
@@ -157,22 +157,22 @@ const NavItem = ({ item }) => {
         <div className="pl-10 space-y-1">
           {item.children.map((child) => {
             const childUrl = window.location.href;
-            
+
             // Check exact route match
             const routeName = child.href.split('/').pop().split('?')[0];
             let isActive = route().current(routeName);
-            
+
             // Check path match for nested routes
             const childPath = child.href.split('?')[0];
             if (!isActive && childUrl.includes(childPath)) {
               isActive = true;
             }
-            
+
             // For pages with query parameters (offers with type, etc.)
             if (child.href.includes('?')) {
               const childParams = new URLSearchParams(child.href.split('?')[1]);
               const currentParams = new URLSearchParams(window.location.search);
-              
+
               // Check if all params in child href match current URL
               let allParamsMatch = true;
               for (const [key, value] of childParams) {
@@ -183,7 +183,7 @@ const NavItem = ({ item }) => {
               }
               if (allParamsMatch) isActive = true;
             }
-            
+
             return (
               <Link
                 key={child.name}
@@ -202,18 +202,19 @@ const NavItem = ({ item }) => {
   );
 };
 
-export default function AuthenticatedLayout({ user, header, children }) {
+export default function AuthenticatedLayout({ user = null, header, children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showLogout, setShowLogout] = useState(false);
-  const userRole = user?.role || 'cashier';
+  const safeUser = user ?? {};
+  const userRole = safeUser.role || 'cashier';
   const navItems = navigation[userRole] || navigation.cashier;
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Mobile Sidebar Overlay */}
       {sidebarOpen && (
-        <div 
-          className="fixed inset-0 z-40 bg-gray-600 bg-opacity-75 lg:hidden" 
+        <div
+          className="fixed inset-0 z-40 bg-gray-600 bg-opacity-75 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -232,7 +233,7 @@ export default function AuthenticatedLayout({ user, header, children }) {
               <NavItem key={item.name} item={item} />
             ))}
           </nav>
-          
+
           <div className="p-4 border-t border-gray-100 bg-gray-50/50">
              <Link
                 href={route('logout')}
@@ -282,11 +283,11 @@ export default function AuthenticatedLayout({ user, header, children }) {
               onClick={() => setShowLogout(!showLogout)}
             >
               <div className="h-9 w-9 rounded-full bg-indigo-600 flex items-center justify-center text-white text-sm font-bold shadow-sm">
-                {user.name?.charAt(0).toUpperCase()}
+                {safeUser.name?.charAt(0).toUpperCase() || 'U'}
               </div>
               <div className="ml-3 overflow-hidden flex-1">
-                <p className="text-sm font-bold text-gray-900 truncate">{user.name}</p>
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{user.role}</p>
+                <p className="text-sm font-bold text-gray-900 truncate">{safeUser.name || 'User'}</p>
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{safeUser.role || 'User'}</p>
               </div>
               <ChevronDownIcon className={`h-4 w-4 text-gray-400 transition-transform duration-200 ${showLogout ? 'rotate-180' : ''}`} />
             </div>
