@@ -12,12 +12,19 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $appends = ['is_admin'];
+
     public function isAdmin(): bool
     {
         $role = strtolower($this->role ?? '');
 
         return in_array($role, ['admin', 'super-admin', 'super_admin'])
             || str_contains(strtolower($this->email ?? ''), 'admin@');
+    }
+
+    public function getIsAdminAttribute(): bool
+    {
+        return $this->isAdmin();
     }
 
     /**
