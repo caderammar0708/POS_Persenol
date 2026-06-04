@@ -1,5 +1,5 @@
 // resources/js/Layouts/AuthenticatedLayout.jsx
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, usePage } from '@inertiajs/react';
 import {
   HomeIcon,
@@ -203,6 +203,7 @@ const NavItem = ({ item }) => {
 export default function AuthenticatedLayout({ user = null, header, children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showLogout, setShowLogout] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
   const pageUser = usePage().props.auth?.user ?? {};
   const safeUser = { ...pageUser, ...(user ?? {}) };
   const normalizedRole = String(safeUser.role ?? '').toLowerCase();
@@ -214,8 +215,24 @@ export default function AuthenticatedLayout({ user = null, header, children }) {
     || normalizedRole.includes('admin');
   const navItems = isAdmin ? navigation.admin : navigation.cashier;
 
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('gd-theme');
+    const preferredDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const nextDark = savedTheme ? savedTheme === 'dark' : preferredDark;
+
+    setDarkMode(nextDark);
+    document.documentElement.classList.toggle('dark', nextDark);
+    document.documentElement.style.colorScheme = nextDark ? 'dark' : 'light';
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', darkMode);
+    document.documentElement.style.colorScheme = darkMode ? 'dark' : 'light';
+    localStorage.setItem('gd-theme', darkMode ? 'dark' : 'light');
+  }, [darkMode]);
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 text-gray-900 dark:bg-slate-950 dark:text-slate-100">
       {/* Mobile Sidebar Overlay */}
       {sidebarOpen && (
         <div
@@ -255,7 +272,7 @@ export default function AuthenticatedLayout({ user = null, header, children }) {
 
       {/* Sidebar for Desktop */}
       <aside className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
-        <div className="flex flex-col h-full bg-white border-r border-gray-200 pt-6 overflow-hidden">
+        <div className="flex flex-col h-full bg-white border-r border-gray-200 pt-6 overflow-hidden dark:bg-slate-900 dark:border-slate-800">
           <div className="px-6 mb-8">
             <Link href={route('dashboard')} className="text-2xl font-black text-indigo-600 tracking-tighter">
               GROW<span className="text-gray-900">DIGITEC</span>
@@ -268,7 +285,7 @@ export default function AuthenticatedLayout({ user = null, header, children }) {
           </nav>
 
           {/* User Section */}
-          <div className="relative p-4 border-t border-gray-100 bg-gray-50/50">
+          <div className="relative p-4 border-t border-gray-100 bg-gray-50/50 dark:border-slate-800 dark:bg-slate-950/80">
             {/* Logout Popover - appears above the profile */}
             {showLogout && (
               <div className="absolute bottom-full left-0 right-0 mb-1 mx-3 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
@@ -302,7 +319,7 @@ export default function AuthenticatedLayout({ user = null, header, children }) {
 
       <div className="lg:pl-64 flex flex-col flex-1">
         {/* Mobile Header */}
-        <div className="sticky top-0 z-10 bg-white border-b border-gray-200 lg:hidden px-4 h-16 flex items-center justify-between">
+        <div className="sticky top-0 z-10 bg-white border-b border-gray-200 lg:hidden px-4 h-16 flex items-center justify-between dark:bg-slate-900 dark:border-slate-800">
            <span className="text-lg font-black text-indigo-600">GD POS</span>
            <button onClick={() => setSidebarOpen(true)} className="p-2 text-gray-500">
               <Bars3Icon className="h-6 w-6" />
@@ -310,14 +327,14 @@ export default function AuthenticatedLayout({ user = null, header, children }) {
         </div>
 
         {header && (
-          <div className="bg-white border-b border-gray-200">
+          <div className="bg-white border-b border-gray-200 dark:bg-slate-900 dark:border-slate-800">
             <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
               {header}
             </div>
           </div>
         )}
 
-        <main className="flex-1 p-4 sm:p-6 lg:p-8">
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 bg-gray-50 dark:bg-slate-950">
           {children}
         </main>
       </div>
