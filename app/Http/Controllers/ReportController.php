@@ -46,6 +46,7 @@ class ReportController extends Controller
         $lowStock = Product::where('stock', '<', 10)->get();
 
         return Inertia::render('Admin/Reports/products', [
+            'auth' => ['user' => Auth::user()],
             'productStats' => $productStats,
             'lowStock' => $lowStock
         ]);
@@ -61,7 +62,10 @@ class ReportController extends Controller
             'all_time' => $this->getProfitStats(),
         ];
 
-        return Inertia::render('Admin/Reports/profit', ['stats' => $stats]);
+        return Inertia::render('Admin/Reports/profit', [
+            'auth' => ['user' => Auth::user()],
+            'stats' => $stats,
+        ]);
     }
 
     private function getProfitStats($startDate = null)

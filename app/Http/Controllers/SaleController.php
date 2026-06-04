@@ -123,6 +123,7 @@ class SaleController extends Controller
             ->paginate(15);
 
         return Inertia::render('Admin/Sales/History', [
+            'auth' => ['user' => Auth::user()],
             'sales' => $sales
         ]);
     }

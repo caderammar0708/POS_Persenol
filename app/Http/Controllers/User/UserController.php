@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
@@ -18,6 +19,7 @@ class UserController extends Controller
 public function edit(User $user): Response
 {
     return Inertia::render('Admin/User/Edit', [
+        'auth' => ['user' => Auth::user()],
         'user' => $user,
     ]);
 }
@@ -58,7 +60,7 @@ public function update(Request $request, User $user): RedirectResponse
 public function destroy(User $user): RedirectResponse
 {
     // Prevent admin from deleting themselves
-    if (auth()->id() === $user->id) {
+    if (Auth::id() === $user->id) {
         return redirect()->back()->with('error', 'You cannot delete yourself!');
     }
 
@@ -72,12 +74,15 @@ public function index(): Response
         $users = User::all();
 
         return Inertia::render('Admin/User/index', [
-    'users' => $users
-]);
+            'auth' => ['user' => Auth::user()],
+            'users' => $users,
+        ]);
     }
     public function create(): Response
     {
-        return Inertia::render('Admin/User/create');
+        return Inertia::render('Admin/User/create', [
+            'auth' => ['user' => Auth::user()],
+        ]);
     }
 
 
