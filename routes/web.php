@@ -77,7 +77,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('offers', OfferController::class);
 });
 
-Route::middleware(['auth', 'admin'])->group(function () {
+Route::middleware('auth')->group(function () {
     Route::get('sales/history', [SaleController::class, 'history'])->name('sales.history');
     Route::resource('sales', SaleController::class);
 });
