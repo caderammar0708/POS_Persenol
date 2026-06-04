@@ -205,13 +205,14 @@ const NavItem = ({ item }) => {
 export default function AuthenticatedLayout({ user = null, header, children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showLogout, setShowLogout] = useState(false);
-  const pageUser = usePage().props.auth?.user ?? null;
-  const safeUser = pageUser ?? user ?? {};
+  const pageUser = usePage().props.auth?.user ?? {};
+  const safeUser = { ...pageUser, ...(user ?? {}) };
   const normalizedRole = String(safeUser.role ?? '').toLowerCase();
   const normalizedEmail = String(safeUser.email ?? '').toLowerCase();
   const isAdmin = Boolean(safeUser.is_admin)
     || ['admin', 'super-admin', 'super_admin'].includes(normalizedRole)
-    || normalizedEmail.includes('admin@');
+    || normalizedEmail.includes('admin@')
+    || normalizedRole.includes('admin');
   const navItems = isAdmin ? navigation.admin : navigation.cashier;
 
   return (
